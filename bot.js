@@ -26,7 +26,7 @@ var defaultDatabase = admin.database();
 
 
 function writeUserData(senderId, recipientId, timeOfMessage, messageId) {
-  defaultDatabase.ref('users/' + senderId).set({
+  defaultDatabase.ref().push().set({
     senderId: senderId,
     recipientId: recipientId,
     timeOfMessage : timeOfMessage,
@@ -65,17 +65,14 @@ app.get('/', function(req, res) {
 
 // Message processing
 app.post('/webhook', function (req, res) {
-  console.log(req.body);
+  console.log("body", req.body);
   var data = req.body;
-
   // Make sure this is a page subscription
   if (data.object === 'page') {
-    
     // Iterate over each entry - there may be multiple if batched
     data.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
