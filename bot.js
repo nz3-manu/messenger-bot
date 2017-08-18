@@ -9,17 +9,20 @@ const request = require('request');
 const fs = require('fs');
 const https = require('https');
 const path = require('path');
-const firebase = require("firebase");
-var config ={
-	apiKey:"AIzaSyCu89x-gpISBOPWhLPu1nTeuWv6Nt0xdak",
-	authDomain:"smart-todo-5664c.firebaseapp.com",
-	databaseURL:"https://smart-todo-5664c.firebaseio.com",
-	projectId:"smart-todo-5664c",
-	storageBucket:"smart-todo-5664c.appspot.com",
-	messagingSenderId:"839763178074"
-}
 
-firebase.initializeApp(config)
+
+
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./rutasdelosandes-174002-firebase-adminsdk-dj251-2aec64faa5.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rutasdelosandes-174002.firebaseio.com"
+});
+
+var defaultAuth = admin.auth();
+var defaultDatabase = admin.database();
 
 var messengerButton = "<html><head><title>Facebook Messenger Bot</title></head><body><h1>Facebook Messenger Bot</h1>This is a bot based on Messenger Platform QuickStart. For more details, see their <a href=\"https://developers.facebook.com/docs/messenger-platform/guides/quick-start\">docs</a>.<script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div></body></html>";
 
