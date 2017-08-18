@@ -24,6 +24,16 @@ admin.initializeApp({
 var defaultAuth = admin.auth();
 var defaultDatabase = admin.database();
 
+
+function writeUserData(senderId, recipientId, timeOfMessage, messageId) {
+  firebase.database().ref('users/' + senderId).set({
+    senderId: senderId,
+    recipientId: recipientId,
+    timeOfMessage : timeOfMessage,
+    messageId: messageId
+  });
+}
+
 var messengerButton = "<html><head><title>Facebook Messenger Bot</title></head><body><h1>Facebook Messenger Bot</h1>This is a bot based on Messenger Platform QuickStart. For more details, see their <a href=\"https://developers.facebook.com/docs/messenger-platform/guides/quick-start\">docs</a>.<script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div></body></html>";
 
 // The rest of the code implements the routes for our Express server.
@@ -36,7 +46,6 @@ app.use(bodyParser.urlencoded({
 
 // Webhook validation
 app.get('/webhook', function(req, res) {
-	console.log(process.env.VERIFY_TOKEN)
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === process.env.VERIFY_TOKEN) {
     console.log("Validating webhook");
@@ -94,6 +103,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+  writeUserData(senderId, recipientId, timeOfMessage, message.mid) 
 
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
