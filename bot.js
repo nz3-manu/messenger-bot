@@ -26,7 +26,7 @@ var defaultDatabase = admin.database();
 
 
 function writeUserData(senderId, recipientId, timeOfMessage, messageId) {
-  firebase.database().ref('users/' + senderId).set({
+  defaultDatabase.ref('users/' + senderId).set({
     senderId: senderId,
     recipientId: recipientId,
     timeOfMessage : timeOfMessage,
