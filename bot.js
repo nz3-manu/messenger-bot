@@ -134,8 +134,9 @@ function sendTextMessage(recipientId, messageText) {
       text: messageText
     }
   };
-
-  callSendAPI(messageData);
+  setTimeout(() => {
+    callSendAPI(messageData);
+   },100000)
 }
 
 function sendGenericMessage(recipientId) {
